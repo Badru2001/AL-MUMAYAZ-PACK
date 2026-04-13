@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grid with Intro Animation & Hover Text</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f5f5f5}
+
+/* ========== INTRO ANIMATION ========== */
+#introSheet{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+    background:#fff;
+}
+.bg{
+    position:absolute;
+    inset:0;
+    background:url('carton-box-background.jpg') center/cover no-repeat;
+    filter:blur(8px);
+    transform:scale(1.1);
+}
+.content{position:relative;z-index:1}
+.wrapper{max-width:280px;text-align:center}
+.logo-container{position:relative}
+#rotatingImage,#centerImage,#bottomImage{filter:blur(12px)}
+.animate #rotatingImage{animation:spin 5s forwards,sharpen 5s forwards}
+.animate #centerImage,#bottomImage{animation:sharpen 5s forwards}
+#rotatingImage{width:100%}
+#centerImage{position:absolute;width:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+#bottomImage{width:80%;margin-top:10px}
+@keyframes spin{to{transform:rotate(1080deg)}}
+@keyframes sharpen{to{filter:blur(0)}}
+
+/* ========== MAIN LAYOUT ========== */
+.sheet{
+    display:flex;
+    min-height:100vh;
+    padding:20px;
+    gap:20px;
+}
+
+/* TEXT COLUMN (always visible) */
+.text-column{
+    flex:1;
+    background:#fff;
+    border:1px solid #ccc;
+    padding:20px;
+    line-height:1.6;
+}
+
+/* CONTENT COLUMN */
+.content-column{
+    flex:2;
+}
+
+/* GRID */
+.grid9{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+.box{
+    background:#fff;
+    border:1px solid #ccc;
+    height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+.box:hover{
+    transform:translateY(-6px);
+    box-shadow:0 8px 16px rgba(0,0,0,.2);
+}
+.box img{max-width:120px;max-height:120px;margin-bottom:8px}
+
+/* INSIDE SHEET (optional if click needed) */
+#insideSheet{display:none;}
+.backBtn{
+    margin-bottom:10px;
+    padding:6px 12px;
+    background:#007bff;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== INTRO ANIMATION ========== -->
+<section class="sheet" id="introSheet">
+    <div class="bg"></div>
+    <div class="content">
+        <div class="wrapper" id="wrapper">
+            <div class="logo-container">
+                <img src="4pcs.png" id="rotatingImage">
+                <img src="square.png" id="centerImage">
+            </div>
+            <img src="name text.png" id="bottomImage">
+        </div>
+    </div>
+</section>
+
+<!-- ========== MAIN SHEET ========== -->
+<section class="sheet" id="mainSheet" style="display:none;">
+
+    <!-- TEXT COLUMN -->
+    <div class="text-column">
+        <h2 id="insideTitle">Hover over a grid item</h2>
+        <p id="insideText">
+            The description will appear here when you hover over any column.
+        </p>
+    </div>
+
+    <!-- CONTENT COLUMN -->
+    <div class="content-column">
+        <!-- GRID -->
+        <div class="grid9" id="grid9">
+            <div class="box" data-title="Packing Carton Box" data-text="Box Type
+
+RSC (Regular Slotted Carton) – Most common; all flaps same size; outer flaps meet at center.
+FOL (Full Overlap) – Flaps fully overlap; stronger for heavy items.
+Die-Cut/Custom – Special shapes or cutouts for specific products.Material
+Single Wall – One layer of corrugated board (for light items).
+Double Wall – Two layers; stronger, for heavier items.
+Triple Wall – Three layers; very heavy-duty, industrial use.Dimensions
+Length × Width × Height (usually in cm or inches).
+Important to match product size + padding.
+Board Flute Type
+
+A-Flute – Thickest, strong cushioning.
+B-Flute – Good for flat crush resistance.
+C-Flute – Most common, general use.
+E-Flute – Thin, good for printing/retail packaging.
+
+Weight Capacity
+Max kg/lbs the box can safely hold.
+Printing/Markings
+Product info, handling instructions (Fragile, This Side Up), logos, barcodes.
+Sealing Method
+Tape, glue, or staples depending on strength needed.
+Optional Features
+Handles or die-cut slots.
+Waterproof coating or lamination for moisture protection.
+Partition inserts for multiple products.">
+                <img src="carton (2).jpg">Packing Carton Box
+            </div>
+            <div class="box" data-title="Single Face Roll" data-text="A single face corrugated roll is a sheet/roll made of one flat liner + one corrugated medium.
+
+It is flexible and cushioning, mainly used as protective wrapping, layering, or padding in boxes.
+Material
+Liner: Kraft paper (brown or white).
+Medium (Flute): Corrugated paper glued to liner.
+Flute Types / Thickness
+
+A-Flute: 5–6 mm (strongest cushioning, heavy items).
+
+B-Flute: 2–3 mm (good flat crush resistance).
+
+C-Flute: 3–4 mm (most common, general use).
+
+E-Flute: 1–2 mm (thin, smooth surface for printing).
+
+Roll Width & Length
+
+Width: Typically 1 m – 1.5 m (customizable).
+
+Length: Can be several meters depending on order.
+Weight / GSM (Grams per Square Meter)
+Liner paper: 100–150 gsm.
+Medium paper: 90–120 gsm.
+Total combined thickness depends on flute type.
+
+Uses
+
+Wrapping fragile items (glass, ceramics, electronics).
+
+Layering between stacked products.
+
+Protective padding inside shipping cartons.
+
+Crafting or industrial packaging purposes.
+
+Optional Features
+
+Kraft color: brown (natural) or white.
+
+Moisture resistance: coated for damp environments.
+
+Custom widths/lengths available per order..">
+                <img src="png2 (2).JPG">Single Face Roll
+            </div>
+            <div class="box" data-title="Plain Sheet" data-text="Plain corrugated sheet for multiple packaging uses.">
+                <img src="png3.jpg">Plain Sheet
+            </div>
+            <div class="box" data-title="Paper Roll" data-text="High-quality paper roll for industrial applications.">
+                <img src="png4.jpg">Paper Roll
+            </div>
+            <div class="box" data-title="Air Bubbles Roll" data-text="Protective bubble roll for fragile products.">
+                <img src="png5 (2).JPG">Air Bubbles Roll
+            </div>
+            <div class="box" data-title="Stretch Film Roll" data-text="Stretchable film for wrapping pallets securely.">
+                <img src="png6.jpg">Stretch Film Roll
+            </div>
+            <div class="box" data-title="Packing Foam" data-text="Foam sheets for cushioning delicate items.">
+                <img src="png7.jpg">Packing Foam
+            </div>
+            <div class="box" data-title="Packing Tape" data-text="Strong BOPP tape for sealing cartons.">
+                <img src="png8.jpg">Packing Tape
+            </div>
+            <div class="box" data-title="Other Items" data-text="Other miscellaneous packing items.">
+                <img src="png9.jpg">Other Items
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+const introSheet  = document.getElementById("introSheet");
+const mainSheet   = document.getElementById("mainSheet");
+const wrapper     = document.getElementById("wrapper");
+const grid9       = document.getElementById("grid9");
+
+/* PLAY INTRO ANIMATION */
+function playIntro(){
+    introSheet.style.display = "flex";
+    mainSheet.style.display  = "none";
+
+    wrapper.classList.remove("animate");
+    void wrapper.offsetWidth;
+    wrapper.classList.add("animate");
+
+    // AFTER animation → show main sheet
+    setTimeout(()=>{
+        introSheet.style.display = "none";
+        mainSheet.style.display  = "flex";
+    }, 5200);
+}
+window.onload = playIntro;
+
+/* HOVER → UPDATE SIDE TEXT */
+const titleEl = document.getElementById("insideTitle");
+const textEl  = document.getElementById("insideText");
+
+document.querySelectorAll("#grid9 .box").forEach(box=>{
+    box.addEventListener("mouseenter", ()=>{
+        const t = box.getAttribute("data-title");
+        const d = box.getAttribute("data-text");
+        titleEl.innerText = t;
+        textEl.innerText  = d;
+    });
+});
+</script>
+
+</body>
+</html>
