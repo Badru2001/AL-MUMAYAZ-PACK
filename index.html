@@ -2,18 +2,40 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Open</title>
+<title>Document Viewer</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f2f2f2;
+}
+
+/* Top bar like WhatsApp */
+.header {
+    background: #075E54;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* PDF container */
+.viewer {
+    width: 100%;
+    height: calc(100vh - 50px);
+    border: none;
+}
+</style>
 </head>
 
-<body style="text-align:center; font-family:Arial;">
+<body>
 
-<script>
-window.onload = function() {
-    window.location.href = "file.pdf";
-};
-</script>
+<div class="header">
+📄 My Document
+</div>
 
-<p>Opening PDF...</p>
+<iframe src="file.pdf" class="viewer"></iframe>
 
 </body>
 </html>
