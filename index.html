@@ -3,55 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Minimal Swipe Profile</title>
+<title>Swipe Sheets</title>
 
 <style>
 body {
     margin: 0;
-    padding: 10px; /* small outer space */
+    padding: 10px;
     background: #fff;
-    font-family: Arial, sans-serif;
     overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-/* Main Screen */
-.container {
+/* Wrapper */
+.wrapper {
     width: 100%;
     height: calc(100vh - 20px);
-    border: 2px solid black;
-    background: white;
-    position: relative;
     overflow: hidden;
+    position: relative;
 }
 
-/* Profile Panel */
-.profile {
+/* Screens */
+.screen {
+    width: 100%;
+    height: 100%;
+    border: 1.5px solid black; /* equal thin border */
+    background: white;
     position: absolute;
     top: 0;
-    left: -80%; /* hidden */
-    width: 80%;
-    height: 100%;
-    border-right: 2px solid black;
-    background: white;
+    left: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Default screen */
+.main {
+    z-index: 2;
+}
+
+/* Profile screen (hidden right side) */
+.profile {
+    transform: translateX(100%);
+    z-index: 3;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: 0.3s ease;
+    flex-direction: column;
 }
 
-/* Active (shown) */
-.profile.active {
-    left: 0;
+/* When active */
+.show-profile .main {
+    transform: translateX(-100%);
 }
 
-/* Profile Image */
+.show-profile .profile {
+    transform: translateX(0);
+}
+
+/* Profile image */
 .profile img {
     width: 90px;
     height: 90px;
     border-radius: 50%;
+    border: 1.5px solid black;
     object-fit: cover;
-    border: 2px solid black;
 }
 
 /* Name */
@@ -65,10 +78,14 @@ body {
 
 <body>
 
-<div class="container" id="main">
+<div class="wrapper" id="app">
 
-    <div class="profile" id="profile">
-        <img src="https://via.placeholder.com/150" alt="Profile">
+    <!-- Main Blank Screen -->
+    <div class="screen main"></div>
+
+    <!-- Profile Full Screen -->
+    <div class="screen profile">
+        <img src="https://via.placeholder.com/150">
         <h2>Badrudheen</h2>
     </div>
 
@@ -78,24 +95,25 @@ body {
 let startX = 0;
 let endX = 0;
 
-const main = document.getElementById("main");
-const profile = document.getElementById("profile");
+const app = document.getElementById("app");
 
 /* Touch Start */
-main.addEventListener("touchstart", function(e) {
+app.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
 });
 
 /* Touch End */
-main.addEventListener("touchend", function(e) {
+app.addEventListener("touchend", e => {
     endX = e.changedTouches[0].clientX;
 
-    if (endX - startX > 50) {
-        profile.classList.add("active"); // swipe right → open
+    // Swipe left → open profile
+    if (startX - endX > 50) {
+        app.classList.add("show-profile");
     }
 
-    if (startX - endX > 50) {
-        profile.classList.remove("active"); // swipe left → close
+    // Swipe right → go back
+    if (endX - startX > 50) {
+        app.classList.remove("show-profile");
     }
 });
 </script>
