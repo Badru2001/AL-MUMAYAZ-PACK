@@ -1,79 +1,143 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Expenso</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expenso Profile</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
-    padding: 10px;
-    background: white;
     font-family: Arial;
+    background: white;
     max-width: 390px;
     margin: auto;
 }
 
-/* Inputs */
-.input-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 5px;
+/* Header */
+.profile {
+    display: flex;
+    align-items: center;
+    padding: 10px;
 }
 
-input {
-    width: 100%;
-    padding: 8px;
+/* Profile Image */
+.profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid black;
+    object-fit: cover;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+    text-align: center;
+}
+
+.stats div {
     border: 1px solid black;
+    padding: 5px;
+    font-size: 12px;
+}
+
+/* Name */
+.name {
+    padding: 0 10px;
+    font-weight: bold;
+}
+
+/* Bio */
+.bio {
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-size: 13px;
+}
+
+/* Section title */
+.section-title {
+    padding: 8px;
+    border-bottom: 1px solid black;
     font-size: 14px;
-}
-
-/* Button */
-button {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid black;
-    background: white;
 }
 
 /* Table */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
-th, td {
+td, th {
     border: 1px solid black;
     padding: 6px;
+    font-size: 12px;
     text-align: center;
-    font-size: 13px;
+}
+
+/* Input */
+input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid black;
+    font-size: 12px;
+}
+
+button {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid black;
+    background: white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="input-row">
-    <input type="text" id="name" placeholder="Name">
-    <input type="number" id="expense" placeholder="Expense">
-    <input type="number" id="payable" placeholder="Payable">
-    <input type="number" id="receivable" placeholder="Receivable">
+<!-- PROFILE -->
+<div class="profile">
+    <img src="https://via.placeholder.com/150" id="profilePic">
+    
+    <div class="stats">
+        <div>
+            <div id="totalExpense">0</div>
+            Expense
+        </div>
+        <div>
+            <div id="totalDebit">0</div>
+            Debit
+        </div>
+        <div>
+            <div id="totalCredit">0</div>
+            Credit
+        </div>
+    </div>
 </div>
 
+<div class="name">Your Name</div>
+
+<div class="bio" contenteditable="true">
+    Write your bio / notes here...
+</div>
+
+<div class="section-title">Entries</div>
+
+<!-- INPUT -->
+<input type="text" id="name" placeholder="Name">
+<input type="number" id="expense" placeholder="Expense">
+<input type="number" id="debit" placeholder="Debit">
+<input type="number" id="credit" placeholder="Credit">
 <button onclick="addData()">Add</button>
 
+<!-- TABLE -->
 <table>
 <tr>
     <th>Name</th>
     <th>Expense</th>
-    <th>Payable</th>
-    <th>Receivable</th>
+    <th>Debit</th>
+    <th>Credit</th>
     <th>X</th>
 </tr>
 <tbody id="data"></tbody>
@@ -83,19 +147,27 @@ th, td {
 function loadData() {
     let data = JSON.parse(localStorage.getItem("expenso")) || [];
     let html = "";
+    let exp = 0, deb = 0, cre = 0;
 
     data.forEach((item, i) => {
+        exp += Number(item.expense || 0);
+        deb += Number(item.debit || 0);
+        cre += Number(item.credit || 0);
+
         html += `
         <tr>
             <td>${item.name}</td>
             <td>${item.expense}</td>
-            <td>${item.payable}</td>
-            <td>${item.receivable}</td>
+            <td>${item.debit}</td>
+            <td>${item.credit}</td>
             <td><button onclick="del(${i})">X</button></td>
         </tr>`;
     });
 
     document.getElementById("data").innerHTML = html;
+    document.getElementById("totalExpense").innerText = exp;
+    document.getElementById("totalDebit").innerText = deb;
+    document.getElementById("totalCredit").innerText = cre;
 }
 
 function addData() {
@@ -104,16 +176,16 @@ function addData() {
     data.push({
         name: name.value,
         expense: expense.value,
-        payable: payable.value,
-        receivable: receivable.value
+        debit: debit.value,
+        credit: credit.value
     });
 
     localStorage.setItem("expenso", JSON.stringify(data));
 
     name.value = "";
     expense.value = "";
-    payable.value = "";
-    receivable.value = "";
+    debit.value = "";
+    credit.value = "";
 
     loadData();
 }
