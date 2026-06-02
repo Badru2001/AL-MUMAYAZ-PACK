@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expenso Profile</title>
+<title>Expenso</title>
 
 <style>
 body {
@@ -13,83 +13,50 @@ body {
     margin: auto;
 }
 
-/* Header */
+/* PROFILE */
 .profile {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+    padding: 15px;
 }
 
-/* Profile Image */
 .profile img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     border: 2px solid black;
-    object-fit: cover;
 }
 
-/* Stats */
-.stats {
-    display: flex;
-    justify-content: space-around;
-    flex: 1;
-    text-align: center;
-}
-
-.stats div {
-    border: 1px solid black;
-    padding: 5px;
-    font-size: 12px;
-}
-
-/* Name */
+/* NAME */
 .name {
-    padding: 0 10px;
+    padding-left: 15px;
     font-weight: bold;
 }
 
-/* Bio */
-.bio {
-    padding: 10px;
+/* TABS */
+.tabs {
+    display: flex;
+    margin-top: 10px;
+}
+
+.tab {
+    flex: 1;
+    height: 40px;
+}
+
+/* Different colors */
+.tab:nth-child(1) { background: #ddd; }
+.tab:nth-child(2) { background: #bbb; }
+.tab:nth-child(3) { background: #999; }
+.tab:nth-child(4) { background: #777; }
+
+/* CONTENT */
+.content {
+    display: none;
+    height: 400px;
     border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    font-size: 13px;
 }
 
-/* Section title */
-.section-title {
-    padding: 8px;
-    border-bottom: 1px solid black;
-    font-size: 14px;
-}
-
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-td, th {
-    border: 1px solid black;
-    padding: 6px;
-    font-size: 12px;
-    text-align: center;
-}
-
-/* Input */
-input {
-    width: 100%;
-    padding: 6px;
-    border: 1px solid black;
-    font-size: 12px;
-}
-
-button {
-    width: 100%;
-    padding: 6px;
-    border: 1px solid black;
-    background: white;
+.active {
+    display: block;
 }
 </style>
 </head>
@@ -98,106 +65,31 @@ button {
 
 <!-- PROFILE -->
 <div class="profile">
-    <img src="https://via.placeholder.com/150" id="profilePic">
-    
-    <div class="stats">
-        <div>
-            <div id="totalExpense">0</div>
-            Expense
-        </div>
-        <div>
-            <div id="totalDebit">0</div>
-            Debit
-        </div>
-        <div>
-            <div id="totalCredit">0</div>
-            Credit
-        </div>
-    </div>
+    <img src="https://via.placeholder.com/150">
 </div>
 
-<div class="name">Your Name</div>
+<div class="name">Badrudheen</div>
 
-<div class="bio" contenteditable="true">
-    Write your bio / notes here...
+<!-- 4 COLOR ROW -->
+<div class="tabs">
+    <div class="tab" onclick="showTab(0)"></div>
+    <div class="tab" onclick="showTab(1)"></div>
+    <div class="tab" onclick="showTab(2)"></div>
+    <div class="tab" onclick="showTab(3)"></div>
 </div>
 
-<div class="section-title">Entries</div>
-
-<!-- INPUT -->
-<input type="text" id="name" placeholder="Name">
-<input type="number" id="expense" placeholder="Expense">
-<input type="number" id="debit" placeholder="Debit">
-<input type="number" id="credit" placeholder="Credit">
-<button onclick="addData()">Add</button>
-
-<!-- TABLE -->
-<table>
-<tr>
-    <th>Name</th>
-    <th>Expense</th>
-    <th>Debit</th>
-    <th>Credit</th>
-    <th>X</th>
-</tr>
-<tbody id="data"></tbody>
-</table>
+<!-- CONTENT AREAS -->
+<div id="tab0" class="content active"></div>
+<div id="tab1" class="content"></div>
+<div id="tab2" class="content"></div>
+<div id="tab3" class="content"></div>
 
 <script>
-function loadData() {
-    let data = JSON.parse(localStorage.getItem("expenso")) || [];
-    let html = "";
-    let exp = 0, deb = 0, cre = 0;
-
-    data.forEach((item, i) => {
-        exp += Number(item.expense || 0);
-        deb += Number(item.debit || 0);
-        cre += Number(item.credit || 0);
-
-        html += `
-        <tr>
-            <td>${item.name}</td>
-            <td>${item.expense}</td>
-            <td>${item.debit}</td>
-            <td>${item.credit}</td>
-            <td><button onclick="del(${i})">X</button></td>
-        </tr>`;
-    });
-
-    document.getElementById("data").innerHTML = html;
-    document.getElementById("totalExpense").innerText = exp;
-    document.getElementById("totalDebit").innerText = deb;
-    document.getElementById("totalCredit").innerText = cre;
+function showTab(n) {
+    let tabs = document.querySelectorAll(".content");
+    tabs.forEach(t => t.classList.remove("active"));
+    document.getElementById("tab"+n).classList.add("active");
 }
-
-function addData() {
-    let data = JSON.parse(localStorage.getItem("expenso")) || [];
-
-    data.push({
-        name: name.value,
-        expense: expense.value,
-        debit: debit.value,
-        credit: credit.value
-    });
-
-    localStorage.setItem("expenso", JSON.stringify(data));
-
-    name.value = "";
-    expense.value = "";
-    debit.value = "";
-    credit.value = "";
-
-    loadData();
-}
-
-function del(i) {
-    let data = JSON.parse(localStorage.getItem("expenso"));
-    data.splice(i,1);
-    localStorage.setItem("expenso", JSON.stringify(data));
-    loadData();
-}
-
-loadData();
 </script>
 
 </body>
