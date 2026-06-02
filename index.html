@@ -6,20 +6,27 @@
 
 <style>
 body {
-    margin: 8px;              /* 👈 space outside */
-    background: white;
+    margin: 10px; /* space outside */
+    background: #eee;
     max-width: 390px;
-    height: calc(100vh - 16px); /* adjust height for margin */
+    height: calc(100vh - 20px);
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
     font-family: Arial;
-    border: 2px solid black; /* outer line */
-}
-</style>
 }
 
-/* MAIN BLANK SCREEN */
+/* MAIN APP BOX */
+.app {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border: 2px solid black;
+    position: relative;
+    overflow: hidden;
+}
+
+/* BLANK SCREEN */
 .main {
     width: 100%;
     height: 100%;
@@ -27,15 +34,20 @@ body {
 
 /* SIDE PROFILE PANEL */
 .profile-panel {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: -250px;
-    width: 250px;
+    left: -260px;
+    width: 260px;
     height: 100%;
     background: white;
     border-right: 2px solid black;
     transition: 0.3s;
     padding: 15px;
+}
+
+/* SHOW PANEL */
+.show {
+    left: 0;
 }
 
 /* PROFILE IMAGE */
@@ -51,43 +63,45 @@ body {
     margin-top: 10px;
     font-weight: bold;
 }
-
-/* SHOW PANEL */
-.show {
-    left: 0;
-}
 </style>
 </head>
 
 <body>
 
-<!-- SIDE PROFILE -->
-<div id="panel" class="profile-panel">
-    <img src="https://via.placeholder.com/150">
-    <div class="name">Badrudheen</div>
-</div>
+<div class="app">
 
-<!-- MAIN BLANK -->
-<div class="main" id="main"></div>
+    <!-- PROFILE PANEL -->
+    <div id="panel" class="profile-panel">
+        <img src="https://via.placeholder.com/150">
+        <div class="name">Badrudheen</div>
+    </div>
+
+    <!-- MAIN BLANK SCREEN -->
+    <div id="main" class="main"></div>
+
+</div>
 
 <script>
 let startX = 0;
 
-document.getElementById("main").addEventListener("touchstart", e => {
+let main = document.getElementById("main");
+let panel = document.getElementById("panel");
+
+main.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
 });
 
-document.getElementById("main").addEventListener("touchend", e => {
+main.addEventListener("touchend", e => {
     let endX = e.changedTouches[0].clientX;
 
-    // swipe right
+    // swipe right → open
     if (endX - startX > 50) {
-        document.getElementById("panel").classList.add("show");
+        panel.classList.add("show");
     }
 
-    // swipe left
+    // swipe left → close
     if (startX - endX > 50) {
-        document.getElementById("panel").classList.remove("show");
+        panel.classList.remove("show");
     }
 });
 </script>
