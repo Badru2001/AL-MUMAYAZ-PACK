@@ -1,41 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document Viewer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expenso</title>
 
 <style>
 body {
-    margin: 0;
     font-family: Arial;
+    margin: 0;
+    padding: 10px;
     background: #f2f2f2;
 }
 
-/* Top bar like WhatsApp */
-.header {
-    background: #075E54;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
+h2 {
+    text-align: center;
 }
 
-/* PDF container */
-.viewer {
-    width: 100%;
-    height: calc(100vh - 50px);
+/* Input Row */
+.input-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+}
+
+button {
+    padding: 8px;
+    background: #007bff;
+    color: white;
     border: none;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    background: #007bff;
+    color: white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-📄 My Document
+<h2>Expenso</h2>
+
+<div class="input-row">
+    <input type="text" id="name" placeholder="Name">
+    <input type="number" id="expense" placeholder="Expense">
+    <input type="number" id="payable" placeholder="Payable">
+    <input type="number" id="receivable" placeholder="Receivable">
 </div>
 
-<iframe src="file.pdf" class="viewer"></iframe>
+<button onclick="addData()">Add</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Expense</th>
+            <th>Payable</th>
+            <th>Receivable</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody id="tableData"></tbody>
+</table>
+
+<script>
+function loadData() {
+    let data = JSON.parse(localStorage.getItem("expenso")) || [];
+    let table = document.getElementById("tableData");
+    table.innerHTML = "";
+
+    data.forEach((item, index) => {
+        table.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.expense}</td>
+                <td>${item.payable}</td>
+                <td>${item.receivable}</td>
+                <td><button onclick="deleteData(${index})">X</button></td>
+            </tr>
+        `;
+    });
+}
+
+function addData() {
+    let name = document.getElementById("name").value;
+    let expense = document.getElementById("expense").value;
+    let payable = document.getElementById("payable").value;
+    let receivable = document.getElementById("receivable").value;
+
+    let data = JSON.parse(localStorage.getItem("expenso")) || [];
+
+    data.push({name, expense, payable, receivable});
+    localStorage.setItem("expenso", JSON.stringify(data));
+
+    document.getElementById("name").value = "";
+    document.getElementById("expense").value = "";
+    document.getElementById("payable").value = "";
+    document.getElementById("receivable").value = "";
+
+    loadData();
+}
+
+function deleteData(index) {
+    let data = JSON.parse(localStorage.getItem("expenso"));
+    data.splice(index, 1);
+    localStorage.setItem("expenso", JSON.stringify(data));
+    loadData();
+}
+
+loadData();
+</script>
 
 </body>
 </html>
