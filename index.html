@@ -14,11 +14,12 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* OUTER FRAME */
+/* OUTER FRAME WITH CURVE */
 .frame {
     width: 100%;
     height: calc(100vh - 20px);
     border: 1.5px solid black;
+    border-radius: 12px;   /* 👈 CURVE ADDED */
     overflow: hidden;
     position: relative;
 }
@@ -45,12 +46,12 @@ body {
 
 /* PROFILE */
 .profile {
-    background: #e5e5e5; /* gray */
+    background: #e5e5e5;
     padding: 20px;
     box-sizing: border-box;
 }
 
-/* TOP PROFILE ROW */
+/* PROFILE HEADER */
 .profile-header {
     display: flex;
     align-items: center;
@@ -80,10 +81,10 @@ body {
 <div class="frame" id="app">
     <div class="slider" id="slider">
 
-        <!-- MAIN BLANK -->
+        <!-- MAIN -->
         <div class="screen main"></div>
 
-        <!-- PROFILE SCREEN -->
+        <!-- PROFILE -->
         <div class="screen profile">
             <div class="profile-header">
                 <img src="https://via.placeholder.com/150">
@@ -101,21 +102,17 @@ let endX = 0;
 const app = document.getElementById("app");
 const slider = document.getElementById("slider");
 
-/* TOUCH START */
 app.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
 });
 
-/* TOUCH END */
 app.addEventListener("touchend", e => {
     endX = e.changedTouches[0].clientX;
 
-    // swipe left → profile
     if (startX - endX > 50) {
         slider.style.transform = "translateX(-100%)";
     }
 
-    // swipe right → back
     if (endX - startX > 50) {
         slider.style.transform = "translateX(0)";
     }
